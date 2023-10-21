@@ -69,7 +69,7 @@
     </licenses>
 
     <scm>
-        <connection>https://github.com/steveohara/j2mod.git</connection>
+        <connection>scm:git:https://github.com/steveohara/j2mod.git</connection>
         <url>https://github.com/steveohara/j2mod</url>
     </scm>
 
