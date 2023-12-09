@@ -245,3 +245,6 @@ _(**NOT BACKWARDS COMPATIBLE**)_
 * Added equals & hashcode method to ModbusTCPMaster & TCPMasterConnection (#127)
 * modbus slave factory getSlave fix
 * Bumped the version
+
+## Version 3.2.1
+* Add capability to bind the Socket to specific local interface. (#135)
