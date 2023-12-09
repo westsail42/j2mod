@@ -248,3 +248,4 @@ _(**NOT BACKWARDS COMPATIBLE**)_
 
 ## Version 3.2.1
 * Add capability to bind the Socket to specific local interface. (#135)
+* Serial port is left hanging in OS if it gets physically disconnected (#144)
