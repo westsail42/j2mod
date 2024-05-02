@@ -251,3 +251,6 @@ _(**NOT BACKWARDS COMPATIBLE**)_
 * Serial port is left hanging in OS if it gets physically disconnected (#144)
 * Modbus Serial new event to serial disconnected (#148)
 * Updated jserialcomm to 2.10.4
+
+## Version 3.2.2
+* Add support for providing an optional java.net proxy for. (#151)
