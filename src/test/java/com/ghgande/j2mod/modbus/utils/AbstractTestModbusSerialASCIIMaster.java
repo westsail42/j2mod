@@ -22,7 +22,6 @@ import com.ghgande.j2mod.modbus.slave.ModbusSlave;
 import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -40,11 +39,14 @@ public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
 
     protected static ModbusSerialMaster master;
     protected static ModbusSlave slave;
+    protected static final String MASTER_PORT = isWindows() ? "CNCA0" : "/dev/ttys001";
+    protected static final String SLAVE_PORT = isWindows() ? "CNCB0" : "/dev/ttys002";
+    protected static final String SERIAL_PORT_ERROR = "Cannot initialise serial tests - %s%n" +
+            "This is likely caused by not having the serial emulator running%n" +
+            "For Windows, the com2com driver needs to be installed and configured so that CNCA0 is connected to CNCB0.%n" +
+            "For Mac/linux the socat utility can be used e.g. socat -d -d pty,raw,echo=0 pty,raw,echo=0%n" +
+            "to connect /dev/ttys001 to /dev/ttys002";
 
-    @Before
-    public void windowsOnly() {
-        org.junit.Assume.assumeTrue(isWindows());
-    }
 
     @BeforeClass
     public static void setUpSlave() {
@@ -53,7 +55,7 @@ public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
 
             // Create master
             SerialParameters parameters = new SerialParameters();
-            parameters.setPortName("CNCA0");
+            parameters.setPortName(MASTER_PORT);
             parameters.setOpenDelay(1000);
             parameters.setEncoding(Modbus.SERIAL_ENCODING_ASCII);
             master = new ModbusSerialMaster(parameters);
@@ -61,7 +63,7 @@ public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
         }
         catch (Exception e) {
             tearDownSlave();
-            fail(String.format("Cannot initialise tests - %s", e.getMessage()));
+            fail(String.format(SERIAL_PORT_ERROR, e.getMessage()));
         }
     }
 
@@ -92,7 +94,7 @@ public class AbstractTestModbusSerialASCIIMaster extends AbstractTestModbus {
 
             // Create a serial slave
             SerialParameters parameters = new SerialParameters();
-            parameters.setPortName("CNCB0");
+            parameters.setPortName(SLAVE_PORT);
             parameters.setOpenDelay(1000);
             parameters.setEncoding(RTU ? Modbus.SERIAL_ENCODING_RTU : Modbus.SERIAL_ENCODING_ASCII);
             slave = ModbusSlaveFactory.createSerialSlave(parameters);

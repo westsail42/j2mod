@@ -16,12 +16,9 @@
 package com.ghgande.j2mod.modbus.utils;
 
 import com.ghgande.j2mod.modbus.procimg.*;
-import com.ghgande.j2mod.modbus.procimg.Record;
 import com.ghgande.j2mod.modbus.slave.ModbusSlave;
 import com.ghgande.j2mod.modbus.util.Observable;
 import com.ghgande.j2mod.modbus.util.Observer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * All the master unit tests extend this class so that the system will automatically
@@ -31,13 +28,12 @@ import org.slf4j.LoggerFactory;
  * @version 2.0 (March 2016)
  */
 public class AbstractTestModbus {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractTestModbus.class);
     public static ModbusSlave slave = null;
     public static final int UNIT_ID = 15;
     public static final int PORT = 2502;
     public static final String LOCALHOST = "127.0.0.1";
 
-    private static Observer observer = new ObserverMonitor();
+    private static final Observer observer = new ObserverMonitor();
     protected static Observable updatedRegister;
     protected static String updatedArgument;
 
@@ -162,7 +158,7 @@ public class AbstractTestModbus {
      *
      * @return True if Windows OS
      */
-    boolean isWindows() {
+    static boolean isWindows() {
       return System.getProperty("os.name").startsWith("Windows");
     }
 

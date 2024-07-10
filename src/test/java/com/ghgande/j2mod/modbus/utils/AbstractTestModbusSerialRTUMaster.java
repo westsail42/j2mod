@@ -19,7 +19,6 @@ import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 
 import static org.junit.Assert.fail;
@@ -33,11 +32,6 @@ import static org.junit.Assert.fail;
  */
 public class AbstractTestModbusSerialRTUMaster extends AbstractTestModbusSerialASCIIMaster {
 
-    @Before
-    public void windowsOnly() {
-        org.junit.Assume.assumeTrue(isWindows());
-    }
-
     @BeforeClass
     public static void setUpSlave() {
         try {
@@ -45,7 +39,7 @@ public class AbstractTestModbusSerialRTUMaster extends AbstractTestModbusSerialA
 
             // Create master
             SerialParameters parameters = new SerialParameters();
-            parameters.setPortName("CNCA0");
+            parameters.setPortName(MASTER_PORT);
             parameters.setOpenDelay(1000);
             parameters.setEncoding(Modbus.SERIAL_ENCODING_RTU);
             master = new ModbusSerialMaster(parameters);
@@ -53,7 +47,7 @@ public class AbstractTestModbusSerialRTUMaster extends AbstractTestModbusSerialA
         }
         catch (Exception e) {
             tearDownSlave();
-            fail(String.format("Cannot initialise tests - %s", e.getMessage()));
+            fail(String.format(SERIAL_PORT_ERROR, e.getMessage()));
         }
     }
 
