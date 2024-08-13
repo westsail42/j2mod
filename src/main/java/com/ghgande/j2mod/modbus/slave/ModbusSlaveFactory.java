@@ -94,6 +94,9 @@ public class ModbusSlaveFactory {
      */
     public static synchronized ModbusSlave createTCPSlave(InetAddress address, int port, int poolSize, boolean useRtuOverTcp, int maxIdleSeconds) throws ModbusException {
         String key = ModbusSlaveType.TCP.getKey(port);
+        if (address != null) {
+            key = address.toString() + key;
+        }
         if (slaves.containsKey(key)) {
             return slaves.get(key);
         }
@@ -125,6 +128,9 @@ public class ModbusSlaveFactory {
      */
     public static synchronized ModbusSlave createUDPSlave(InetAddress address, int port) throws ModbusException {
         String key = ModbusSlaveType.UDP.getKey(port);
+        if (address != null) {
+            key = address.toString() + key;
+        }
         if (slaves.containsKey(key)) {
             return slaves.get(key);
         }
