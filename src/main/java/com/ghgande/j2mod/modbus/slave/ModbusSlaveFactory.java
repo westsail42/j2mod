@@ -93,10 +93,7 @@ public class ModbusSlaveFactory {
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusSlave createTCPSlave(InetAddress address, int port, int poolSize, boolean useRtuOverTcp, int maxIdleSeconds) throws ModbusException {
-        String key = ModbusSlaveType.TCP.getKey(port);
-        if (address != null) {
-            key = address.toString() + key;
-        }
+        String key = makeKey(address, port, ModbusSlaveType.TCP);
         if (slaves.containsKey(key)) {
             return slaves.get(key);
         }
@@ -105,6 +102,14 @@ public class ModbusSlaveFactory {
             slaves.put(key, slave);
             return slave;
         }
+    }
+
+    private static String makeKey(InetAddress address, int port, ModbusSlaveType t) {
+        String key =t.getKey(port);
+        if (address != null) {
+            key = address.toString() + key;
+        }
+        return key;
     }
 
     /**
@@ -127,10 +132,7 @@ public class ModbusSlaveFactory {
      * @throws ModbusException If a problem occurs e.g. port already in use
      */
     public static synchronized ModbusSlave createUDPSlave(InetAddress address, int port) throws ModbusException {
-        String key = ModbusSlaveType.UDP.getKey(port);
-        if (address != null) {
-            key = address.toString() + key;
-        }
+        String key = makeKey(address, port, ModbusSlaveType.UDP);
         if (slaves.containsKey(key)) {
             return slaves.get(key);
         }
@@ -187,6 +189,13 @@ public class ModbusSlaveFactory {
                 slaves.remove(slave.getType().getKey(slave.getSerialParams().getPortName()));
             } else {
                 slaves.remove(slave.getType().getKey(slave.getPort()));
+            }
+            if (slaves.containsValue(slave)) {
+                for (Map.Entry<String, ModbusSlave> entry : slaves.entrySet()) {
+                    if (entry.getValue().equals(slave)) {
+                        slaves.remove(entry.getKey());
+                    }
+                }
             }
         }
     }
